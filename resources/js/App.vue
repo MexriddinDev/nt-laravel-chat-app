@@ -11,16 +11,16 @@
 
         <!-- Main Content -->
         <div class="flex flex-1 overflow-hidden">
-            <!-- Sidebar Component -->
+            <!-- Sidebar Component - smaller on larger screens -->
             <Sidebar
                 :contacts="filteredContacts"
                 :selectedContactId="selectedContactId"
                 @select-contact="selectContact"
-                class="w-1/3 md:w-1/4 border-r bg-white overflow-y-auto"
+                class="w-1/4 md:w-1/5 lg:w-1/6 border-r bg-white overflow-y-auto"
             />
 
-            <!-- Chat Window Component -->
-            <div class="flex flex-col w-2/3 md:w-3/4">
+            <!-- Chat Window Component - larger on larger screens -->
+            <div class="flex flex-col w-3/4 md:w-4/5 lg:w-5/6">
                 <ChatWindow
                     v-if="selectedContactId"
                     :messages="messages"
@@ -294,19 +294,21 @@ export default {
             getMessages();
 
             // Set up Echo for real-time updates
-            window.Echo.private("channel_for_everyone")
-                .listen('GotMessage', (e) => {
-                    console.log('Received message:', e);
-                    // Reload messages to include the new one
-                    getMessages();
+            if (window.Echo) {
+                window.Echo.private("channel_for_everyone")
+                    .listen('GotMessage', (e) => {
+                        console.log('Received message:', e);
+                        // Reload messages to include the new one
+                        getMessages();
 
-                    // If the message is from the currently selected contact,
-                    // mark it as read. Otherwise, update unread state.
-                    if (e.message.user_id !== selectedContactId.value) {
-                        const contact = contacts.value.find(c => c.id === e.message.user_id);
-                        if (contact) contact.unread = true;
-                    }
-                });
+                        // If the message is from the currently selected contact,
+                        // mark it as read. Otherwise, update unread state.
+                        if (e.message && e.message.user_id !== selectedContactId.value) {
+                            const contact = contacts.value.find(c => c.id === e.message.user_id);
+                            if (contact) contact.unread = true;
+                        }
+                    });
+            }
         });
 
         return {

@@ -1,44 +1,5 @@
 <template>
     <div class="border-t bg-white p-3">
-        <!-- Quick Message Dropdown -->
-        <div class="mb-3 flex justify-end">
-            <div class="relative inline-block text-left">
-                <div>
-                    <button
-                        type="button"
-                        class="inline-flex justify-center items-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
-                        @click="toggleQuickMessages"
-                    >
-                        <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-                        </svg>
-                        <span>Quick Message</span>
-                        <svg class="h-5 w-5 ml-2 -mr-1 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- Dropdown Menu -->
-                <div
-                    v-if="showQuickMessages"
-                    class="origin-top-right absolute right-0 mt-2 w-72 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10 divide-y divide-gray-100"
-                    v-click-outside="closeQuickMessages"
-                >
-                    <div class="py-1">
-                        <button
-                            v-for="(message, index) in quickMessages"
-                            :key="index"
-                            @click="selectQuickMessage(message)"
-                            class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150"
-                        >
-                            {{ message }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Message Input Area -->
         <div class="flex items-center bg-white rounded-lg border shadow-sm">
             <!-- Attachment Button -->
@@ -126,18 +87,7 @@ export default {
     },
     emits: ['update:modelValue', 'send'],
     setup(props, { emit }) {
-        const showQuickMessages = ref(false);
         const showEmojiPicker = ref(false);
-
-        // Quick message templates
-        const quickMessages = [
-            "Thanks for your feedback!",
-            "We'll get back to you as soon as possible.",
-            "Could you please provide more details?",
-            "Is there anything else I can help you with?",
-            "Thank you for reaching out to us.",
-            "I'll check this and update you shortly."
-        ];
 
         // Common emoji selection
         const commonEmojis = [
@@ -160,31 +110,12 @@ export default {
             }
         };
 
-        const toggleQuickMessages = () => {
-            showQuickMessages.value = !showQuickMessages.value;
-            if (showQuickMessages.value) {
-                showEmojiPicker.value = false;
-            }
-        };
-
-        const closeQuickMessages = () => {
-            showQuickMessages.value = false;
-        };
-
         const toggleEmojiPicker = () => {
             showEmojiPicker.value = !showEmojiPicker.value;
-            if (showEmojiPicker.value) {
-                showQuickMessages.value = false;
-            }
         };
 
         const closeEmojiPicker = () => {
             showEmojiPicker.value = false;
-        };
-
-        const selectQuickMessage = (message) => {
-            emit('update:modelValue', message);
-            showQuickMessages.value = false;
         };
 
         const addEmoji = (emoji) => {
@@ -207,18 +138,13 @@ export default {
         };
 
         return {
-            quickMessages,
             commonEmojis,
-            showQuickMessages,
             showEmojiPicker,
             canSend,
             updateValue,
             sendMessage,
-            toggleQuickMessages,
-            closeQuickMessages,
             toggleEmojiPicker,
             closeEmojiPicker,
-            selectQuickMessage,
             addEmoji,
             vClickOutside
         };
@@ -230,23 +156,6 @@ export default {
 /* Input focus ring */
 input:focus {
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-}
-
-/* Quick message dropdown animation */
-.origin-top-right {
-    transform-origin: top right;
-    animation: dropdown-appear 0.15s ease-out;
-}
-
-@keyframes dropdown-appear {
-    from {
-        transform: scale(0.95);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
 }
 
 /* Emoji picker animation */

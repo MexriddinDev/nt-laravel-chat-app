@@ -37,12 +37,12 @@
             </div>
         </div>
 
-        <!-- Messages Container -->
+        <!-- Messages Container - uses more horizontal space -->
         <div
             ref="messagesContainer"
             class="flex-1 p-4 overflow-y-auto bg-gray-50 messages-container"
         >
-            <div class="flex flex-col max-w-3xl mx-auto space-y-4">
+            <div class="flex flex-col mx-auto space-y-4 w-full px-4 md:px-10 lg:px-16 xl:px-24">
                 <!-- Date separator -->
                 <div class="flex justify-center my-4">
                     <div class="px-3 py-1 text-xs text-gray-500 bg-gray-100 rounded-full">
@@ -58,6 +58,7 @@
                         :message="message"
                         :isSender="message.user.id === currentUser.id"
                         :showAvatar="shouldShowAvatar(message)"
+                        class="max-w-3xl md:max-w-4xl lg:max-w-5xl"
                     />
                 </transition-group>
 
