@@ -91,7 +91,7 @@ export default {
     setup() {
         // Current user (would be fetched from API in a real app)
         const currentUser = ref({
-            id: 1,
+            id: 2,
             name: 'Dea Novita',
             role: 'Admin',
             avatar: '/images/default-avatar.png'
@@ -231,35 +231,21 @@ export default {
             showProfilePanel.value = !showProfilePanel.value;
         };
 
+        const getMe = async () => {
+            try {
+                const response = await axios.get(`/me/`);
+                currentUser.value = response.data;
+                console.info(currentUser.value);
+            } catch (err) {
+                console.error('Error fetching user:', err.message);
+            }
+        };
         // Integrate with your existing message functions
         const getMessages = async () => {
             try {
                 // In a real app, you'd include the selected contact ID in the request
-                // const response = await axios.get(`/messages/${selectedContactId.value}`);
-                // messages.value = response.data;
-
-                // For demo purposes, we'll use sample data
-                messages.value = [
-                    {
-                        id: 1,
-                        user: { id: 1, name: 'Dea Novita' },
-                        text: 'Hi Arya Wibawa,\n\nWe hope your recent visit to our clinic was pleasant. We\'d love to hear your feedback.',
-                        time: '10:20'
-                    },
-                    {
-                        id: 2,
-                        user: { id: 1, name: 'Dea Novita' },
-                        text: 'Please take a moment to share your thoughts with us here. Your feedback helps us improve our services. Thank you! 😊',
-                        time: '10:20'
-                    },
-                    {
-                        id: 3,
-                        user: { id: 2, name: 'Arya Wibawa' },
-                        text: 'Yes, sure! I will fill it out now.',
-                        time: '10:24'
-                    }
-                ];
-
+                const response = await axios.get(`/messages/`);
+                messages.value = response.data;
                 // Scroll to bottom after messages are loaded
                 scrollToBottom();
             } catch (err) {
@@ -272,10 +258,9 @@ export default {
 
             try {
                 // In a real app, you'd send the message to the server
-                // await axios.post('/message', {
-                //   recipient_id: selectedContactId.value,
-                //   text: newMessage.value.trim()
-                // });
+                await axios.post('/message', {
+                  text: newMessage.value.trim()
+                });
 
                 // For demo purposes, we'll add the message locally
                 const message = {
@@ -335,6 +320,7 @@ export default {
         // Lifecycle hooks
         onMounted(() => {
             // Initialize messages for the default selected contact
+            getMe();
             getMessages();
 
             // Set up Echo for real-time updates

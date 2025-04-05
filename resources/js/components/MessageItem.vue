@@ -29,8 +29,8 @@
                 class="px-4 py-2 rounded-lg shadow-sm"
                 :class="[
           isSender
-            ? 'bg-white text-gray-800 rounded-br-none'
-            : 'bg-blue-50 text-gray-800 rounded-bl-none',
+            ? 'bg-blue-50 text-gray-800 rounded-br-none'
+            : ' bg-white text-gray-800 rounded-bl-none',
           message.hasEmoji && message.text.length <= 5 ? 'text-3xl' : ''
         ]"
             >
