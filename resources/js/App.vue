@@ -4,7 +4,9 @@
         <Header
             :user="currentUser"
             :notifications="notifications"
+            :selectedContact="getSelectedContact()"
             @toggle-notifications="toggleNotifications"
+            @toggle-profile="toggleProfilePanel"
             @search="searchGlobal"
             class="shadow-sm z-10"
         />
@@ -19,13 +21,19 @@
                 class="w-1/4 md:w-1/5 lg:w-1/6 border-r bg-white overflow-y-auto"
             />
 
-            <!-- Chat Window Component - larger on larger screens -->
-            <div class="flex flex-col w-3/4 md:w-4/5 lg:w-5/6">
+            <!-- Chat Window Component - adapt width based on profile panel -->
+            <div :class="[
+        'flex flex-col',
+        showProfilePanel
+          ? 'w-1/2 md:w-3/5 lg:w-2/3'
+          : 'w-3/4 md:w-4/5 lg:w-5/6'
+      ]">
                 <ChatWindow
                     v-if="selectedContactId"
                     :messages="messages"
                     :currentUser="currentUser"
                     :selectedContact="getSelectedContact()"
+                    @toggle-profile="toggleProfilePanel"
                     class="flex-1 overflow-hidden"
                     id="messagelist"
                 />
@@ -41,6 +49,13 @@
                     class="border-t"
                 />
             </div>
+
+            <!-- Profile Panel (right side) -->
+            <ProfilePanel
+                v-if="selectedContactId"
+                :contact="getSelectedContact()"
+                :isOpen="showProfilePanel"
+            />
         </div>
 
         <!-- Notification Modal (Optional) -->
@@ -62,6 +77,7 @@ import Sidebar from './components/Sidebar.vue';
 import ChatWindow from './components/ChatWindow.vue';
 import MessageInput from './components/MessageInput.vue';
 import NotificationModal from './components/NotificationModal.vue';
+import ProfilePanel from './components/ProfilePanel.vue';
 
 export default {
     components: {
@@ -69,7 +85,8 @@ export default {
         Sidebar,
         ChatWindow,
         MessageInput,
-        NotificationModal
+        NotificationModal,
+        ProfilePanel
     },
     setup() {
         // Current user (would be fetched from API in a real app)
@@ -92,7 +109,11 @@ export default {
                 lastMessage: 'Yes, sure! I will fill it out now.',
                 timestamp: '10:20',
                 avatar: '/images/default-avatar.png',
-                unread: false
+                unread: false,
+                email: 'arya.wibawa@example.com',
+                phone: '+62 812-3456-7890',
+                location: 'Jakarta, Indonesia',
+                lastSeen: 'today'
             },
             {
                 id: 2,
@@ -100,7 +121,11 @@ export default {
                 lastMessage: 'Yes, sure! I will fill it out now.',
                 timestamp: '10:18',
                 avatar: '/images/default-avatar.png',
-                unread: true
+                unread: true,
+                email: 'vita.darmawan@example.com',
+                phone: '+62 813-4567-8901',
+                location: 'Surabaya, Indonesia',
+                lastSeen: 'yesterday'
             },
             {
                 id: 3,
@@ -108,7 +133,11 @@ export default {
                 lastMessage: 'Yes, sure! I will fill it out now.',
                 timestamp: '10:17',
                 avatar: '/images/default-avatar.png',
-                unread: false
+                unread: false,
+                email: 'purnami.aksa@example.com',
+                phone: '+62 814-5678-9012',
+                location: 'Bali, Indonesia',
+                lastSeen: '2 days ago'
             },
             {
                 id: 4,
@@ -116,7 +145,11 @@ export default {
                 lastMessage: 'Yes, sure! I will fill it out now.',
                 timestamp: '10:15',
                 avatar: '/images/default-avatar.png',
-                unread: true
+                unread: true,
+                email: 'angel.mawar@example.com',
+                phone: '+62 815-6789-0123',
+                location: 'Bandung, Indonesia',
+                lastSeen: 'today'
             },
             {
                 id: 5,
@@ -124,7 +157,11 @@ export default {
                 lastMessage: 'Yes, sure! I will fill it out now.',
                 timestamp: '10:12',
                 avatar: '/images/default-avatar.png',
-                unread: false
+                unread: false,
+                email: 'lily.indrawan@example.com',
+                phone: '+62 816-7890-1234',
+                location: 'Yogyakarta, Indonesia',
+                lastSeen: '3 days ago'
             }
         ]);
 
@@ -166,6 +203,9 @@ export default {
         // Show/hide notifications modal
         const showNotifications = ref(false);
 
+        // Show/hide profile panel
+        const showProfilePanel = ref(false);
+
         // Methods
         const selectContact = (contactId) => {
             selectedContactId.value = contactId;
@@ -185,6 +225,10 @@ export default {
         const searchGlobal = (query) => {
             searchQuery.value = query;
             // In a real app, you might want to perform a more comprehensive search
+        };
+
+        const toggleProfilePanel = () => {
+            showProfilePanel.value = !showProfilePanel.value;
         };
 
         // Integrate with your existing message functions
@@ -320,11 +364,13 @@ export default {
             newMessage,
             notifications,
             showNotifications,
+            showProfilePanel,
             selectContact,
             getSelectedContact,
             sendMessage,
             searchGlobal,
             toggleNotifications,
+            toggleProfilePanel,
             markNotificationAsRead,
             markAllNotificationsAsRead
         };

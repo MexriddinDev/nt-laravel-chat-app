@@ -3,7 +3,7 @@
         <!-- Chat Header -->
         <div class="flex items-center justify-between px-4 py-3 bg-white border-b shadow-sm">
             <!-- Contact Info -->
-            <div class="flex items-center">
+            <div class="flex items-center cursor-pointer" @click="$emit('toggle-profile')">
                 <div class="relative">
                     <img
                         :src="selectedContact.avatar || '/images/default-avatar.png'"
@@ -27,8 +27,19 @@
             </div>
 
             <!-- Action buttons -->
-            <div class="flex items-center">
-                <!-- Additional buttons can be added here -->
+            <div class="flex items-center space-x-2">
+                <!-- Info/Profile button -->
+                <button
+                    class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
+                    @click="$emit('toggle-profile')"
+                    aria-label="View Profile"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </button>
+
+                <!-- More options button -->
                 <button class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
@@ -119,6 +130,7 @@ export default {
             required: true
         }
     },
+    emits: ['toggle-profile'],
     setup(props) {
         const messagesContainer = ref(null);
         const isTyping = ref(false);
