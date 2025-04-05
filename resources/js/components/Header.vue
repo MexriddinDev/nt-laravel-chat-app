@@ -1,7 +1,7 @@
 <template>
     <header class="flex items-center justify-between px-4 py-3 bg-white border-b">
         <!-- Logo/Brand -->
-        <div class="text-xl font-bold text-gray-800">ChatHub</div>
+        <div class="text-xl font-bold text-gray-800">Chat</div>
 
         <!-- Search Bar -->
         <div class="relative flex-1 max-w-xl mx-6">
