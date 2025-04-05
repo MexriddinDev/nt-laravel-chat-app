@@ -18,8 +18,11 @@
 
         <!-- Message Content -->
         <div
-            class="max-w-md group relative"
-            :class="{ 'hover:shadow-md transition-shadow duration-200': true }"
+            class="group relative"
+            :class="{
+        'hover:shadow-md transition-shadow duration-200': true,
+        'max-w-[70%] md:max-w-[65%] lg:max-w-[60%]': true
+      }"
         >
             <!-- Message Bubble -->
             <div
@@ -160,11 +163,11 @@ export default {
 }
 
 /* Hover effect */
-.max-w-md {
+.group {
     transition: transform 0.2s ease;
 }
 
-.max-w-md:hover {
+.group:hover {
     transform: translateY(-1px);
 }
 </style>

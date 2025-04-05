@@ -31,7 +31,7 @@
         @else
             <div class="flex items-center justify-center min-h-screen bg-gray-100">
                 <div class="bg-white p-8 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold mb-6 text-center">ChatHub</h2>
+                    <h2 class="text-2xl font-bold mb-6 text-center">Chat</h2>
                     <div class="flex flex-col space-y-4">
                         <a href="{{ route('login') }}"
                            class="px-4 py-2 bg-blue-500 text-white text-center rounded hover:bg-blue-600 transition-colors">

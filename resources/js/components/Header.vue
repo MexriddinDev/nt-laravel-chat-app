@@ -1,7 +1,7 @@
 <template>
     <header class="flex items-center justify-between px-4 py-3 bg-white border-b">
         <!-- Logo/Brand -->
-        <div class="text-xl font-bold text-gray-800">ChatHub</div>
+        <div class="text-xl font-bold text-gray-800">Chat</div>
 
         <!-- Search Bar -->
         <div class="relative flex-1 max-w-xl mx-6">
@@ -19,8 +19,20 @@
             >
         </div>
 
-        <!-- Right Section: Notifications and User Profile -->
-        <div class="flex items-center">
+        <!-- Right Section: Profile Toggle, Notifications and User Profile -->
+        <div class="flex items-center space-x-3">
+            <!-- Profile Info Toggle (only visible when a contact is selected) -->
+            <button
+                v-if="selectedContact"
+                class="p-2 text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
+                @click="$emit('toggle-profile')"
+                aria-label="Toggle Profile Info"
+            >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </button>
+
             <!-- Notification Bell -->
             <button
                 class="relative p-2 text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
@@ -36,7 +48,7 @@
             </button>
 
             <!-- User Profile -->
-            <div class="flex items-center ml-4 cursor-pointer" @click="toggleDropdown">
+            <div class="flex items-center cursor-pointer" @click="toggleDropdown">
                 <div class="relative">
                     <img
                         :src="user.avatar || '/images/default-avatar.png'"
@@ -88,9 +100,13 @@ export default {
         notifications: {
             type: Array,
             default: () => []
+        },
+        selectedContact: {
+            type: Object,
+            default: null
         }
     },
-    emits: ['toggle-notifications', 'search'],
+    emits: ['toggle-notifications', 'toggle-profile', 'search'],
     setup(props, { emit }) {
         const searchQuery = ref('');
         const showDropdown = ref(false);
