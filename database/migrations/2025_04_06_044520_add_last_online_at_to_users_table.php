@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('last_online_at')->default(false);
+            $table->timestamp('last_online_at')->nullable();
         });
     }
 
