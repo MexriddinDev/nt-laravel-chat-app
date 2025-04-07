@@ -47,4 +47,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function lastMessage () {
+        return $this->hasMany(Message::class, 'user_id')
+            ->orderBy('id', 'desc')
+                ->limit(1);
+    }
 }

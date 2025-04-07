@@ -235,7 +235,6 @@ export default {
             try {
                 const response = await axios.get(`/me/`);
                 currentUser.value = response.data;
-                console.info(currentUser.value);
             } catch (err) {
                 console.error('Error fetching user:', err.message);
             }
@@ -250,6 +249,15 @@ export default {
                 scrollToBottom();
             } catch (err) {
                 console.error('Error fetching messages:', err.message);
+            }
+        };
+
+        const getRooms = async () => {
+            try{
+                const response = await axios.get('/rooms');
+                contacts.value = response.data;
+            }catch (err){
+                console.error(err);
             }
         };
 
@@ -321,6 +329,7 @@ export default {
         onMounted(() => {
             // Initialize messages for the default selected contact
             getMe();
+            getRooms();
             getMessages();
 
             // Set up Echo for real-time updates

@@ -1,15 +1,23 @@
 <?php
 
+use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\UserLastOnlineTime;
 
-Route::get('/', function () { return view('welcome'); });
 
 Auth::routes();
 
+Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
 Route::middleware(['auth', UserLastOnlineTime::class])->group(function () {
+
+    Route::get('/', function () {
+        return view('welcome');
+    })->name('welcome');
+
+
+
     Route::get('/me', function () {
         return response()->json(auth()->user());
     })->name('me');
