@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rooms', function (Blueprint $table) {
-            $table->id();
-            $table->enum('type', ['private', 'group']);
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->unique('phone_number', 'users_phone_number_unique');
         });
     }
 
@@ -23,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rooms');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropUnique('users_phone_number_unique');
+        });
     }
 };
