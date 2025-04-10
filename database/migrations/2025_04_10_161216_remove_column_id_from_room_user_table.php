@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('messages', function (Blueprint $table) {
-            $table->foreignId('room_id')->nullable()->constrained();
+        Schema::table('room_user', function (Blueprint $table) {
+            $table->dropColumn('id');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('messages', function (Blueprint $table) {
-            $table->dropForeign('messages_room_id_foreign');
+        Schema::table('room_user', function (Blueprint $table) {
+            $table->increments('id');
         });
     }
 };
