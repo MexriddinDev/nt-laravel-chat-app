@@ -131,11 +131,17 @@ export default {
         const showProfilePanel = ref(false);
 
         // Methods
-        const selectContact = (contactId) => {
-            selectedContactId.value = contactId;
-            getRoomByUser();
+        const selectContact = (Contact) => {
+            if (!Contact.room_id){
+                console.info(contactsStore.contacts);
+                console.info(Contact);
+                selectedContactId.value = Contact.id;
+                return;
+            }
+
+            selectedContactId.value = Contact.room_id;
             // Mark as read (in real app, send API request)
-            const contact = contactsStore.contacts.find(c => c.id === contactId);
+            const contact = contactsStore.contacts.find(c => c.room_id === Contact.room_id);
             if (contact) contact.unread = false;
 
             // Get messages for selected contact
@@ -143,7 +149,14 @@ export default {
         };
 
         const getSelectedContact = () => {
-            return contactsStore.contacts.find(c => c.id === selectedContactId.value) || null;
+            console.info(selectedContactId);
+            console.log(contactsStore.contacts);
+            return contactsStore.contacts.find(c => {
+                if (c.room_id){
+                    return c.room_id === selectedContactId.value;
+                }
+                return c.id === selectedContactId.value;
+            }) || null;
         };
 
         const searchGlobal = (query) => {
@@ -188,15 +201,6 @@ export default {
             try{
                 const response = await axios.get('/rooms');
                 contactsStore.getContacts(response.data);
-            }catch (err){
-                console.error(err);
-            }
-        };
-
-        const getRooms = async () => {
-            try{
-                const response = await axios.get('/rooms');
-                contacts.value = response.data;
             }catch (err){
                 console.error(err);
             }
