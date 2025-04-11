@@ -11,20 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('room_user', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('room_id')->constrained();
-            $table->foreignId('user_id')->constrained();
-            $table->unique(['room_id', 'user_id']);
-            $table->timestamps();
+        Schema::table('room_user', function (Blueprint $table) {
+            $table->dropColumn('id');
         });
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('room_user');
+        Schema::table('room_user', function (Blueprint $table) {
+            $table->increments('id');
+        });
     }
 };
