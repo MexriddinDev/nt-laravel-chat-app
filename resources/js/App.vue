@@ -184,14 +184,7 @@ export default {
             }
         }
         // Fetch contacts (rooms) from the server
-        const getRooms = async () => {
-            try{
-                const response = await axios.get('/rooms');
-                contactsStore.getContacts(response.data);
-            }catch (err){
-                console.error(err);
-            }
-        };
+       
 
         const getRooms = async () => {
             try{
