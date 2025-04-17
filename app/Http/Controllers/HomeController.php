@@ -29,6 +29,7 @@ class HomeController extends Controller
     }
 
 
+
     public function messages(): JsonResponse
     {
         $messages = Message::with('user')->get()->append('time');
