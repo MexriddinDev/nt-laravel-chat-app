@@ -12,10 +12,13 @@ class RoomController extends Controller
     {
         $currentUserId = auth()->user()->id;
 
-        $roomsWithRelations = Room::with([
+        $roomsWithRelations = Room::whereHas('users', fn ($q) =>
+        $q->where('id', $currentUserId)
+        )->with([
             'lastMessage.user',
-            'users'=>fn ($query) => $query->where('user_id', '!=', $currentUserId)
+            'users' => fn ($query) => $query->where('id', '!=', $currentUserId)
         ])->get();
+
 
         $rooms = [];
         foreach ($roomsWithRelations as $room) {
